@@ -87,6 +87,7 @@ async function loadMoreImages() {
 if (data && data.hits.length > 0 && data.hits.length < 40) {
   data.hits.forEach(renderImageCard);
   loadMoreButton.style.display = 'none';
+  Notiflix.Notify.failure(`We're sorry,but you've reached the end of search results.`);
   }
 else {
   data.hits.forEach(renderImageCard);
