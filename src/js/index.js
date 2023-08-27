@@ -49,12 +49,13 @@ async function searchImages(searchQuery) {
   const data = await fetchImages(searchQuery);
   if (data && data.hits.length === 0) {
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    loadMoreButton.style.display = 'none';
     return;
   }
 
   data.hits.forEach(renderImageCard);
 
-  if (data && data.totalHits > currentPage * 40) {
+  if (data && data.hits.length >= currentPage * 40) {
     loadMoreButton.style.display = 'block';
   } else {
     loadMoreButton.style.display = 'none';
@@ -82,8 +83,14 @@ loadMoreButton.addEventListener('click', loadMoreImages);
 async function loadMoreImages() {
   currentPage++;
   const data = await fetchImages(currentQuery);
-  if (data) {
-    data.hits.forEach(renderImageCard);
+  
+if (data && data.hits.length > 0 && data.hits.length < 40) {
+  data.hits.forEach(renderImageCard);
+  loadMoreButton.style.display = 'none';
+  }
+else {
+  data.hits.forEach(renderImageCard);
+  loadMoreButton.style.display = 'block';
   }
 }
 
